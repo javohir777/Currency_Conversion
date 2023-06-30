@@ -1,0 +1,46 @@
+{% extends 'app/header.html' %}
+{% block body %}
+<form action="" method="POST">
+<div class="container center position-absolute top-50 start-50 translate-middle border w-75 shadow p-5 mb-5 bg-body rounded"  >
+  <p class="text-center fs-1">Kонверт валют</p>
+  <hr class="border border-primary border-1 opacity-75 mb-3">
+    {%csrf_token%}
+    <div class="row g-2 ">
+        <div class="col-md">
+          <div class="form-floating">
+            <input class="form-control" id="floatingInputGrid" type="number" {% if from_amount %} value="{{ from_amount }}" {% endif %} name="from-amount">
+            <label for="floatingInputGrid">Cумма</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <select class="form-select" id="floatingSelectGrid" name="from-curr" value="{{ from_curr }}">
+                {% for curr in currencies %}
+                  <option value="{{ curr }}" {% if from_curr == curr %}selected{% endif %}>{{ curr }}</option>
+                {% endfor %}
+            </select>
+            <label for="floatingSelectGrid">Oтдаем</label>
+          </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelectGrid" name="to-curr" value="{{ to_curr }}">
+                {% for curr in currencies %}
+                  <option value="{{ curr }}" {% if to_curr == curr %}selected{% endif %}>{{ curr }}</option>
+                {% endfor %}
+              </select>
+              <label for="floatingSelectGrid">Получаем</label>
+            </div>
+        </div><br>
+        {% if converted_amount %}
+          <div class="shadow p-5 mb-3 bg-body rounded bg-secondary-subtle mt-3 border-bottom border-black">
+            <p class="text-center fs-3">Oтдаем <b>{{ from_curr }}</b> ; Получаем <b>{{ to_curr }}</b></p> <hr>
+            <p class="text-center fs-4">{{ converted_amount }}  {{ to_curr }}</p>
+          </div>
+        {% endif %}
+        <button type="submit" class="btn btn-success {% if not converted_amount %} mt-5 {% endif %}">raschet</button>
+    </div>
+</div>
+
+</form>
+{% endblock %}
